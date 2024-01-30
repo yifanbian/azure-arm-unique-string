@@ -1,0 +1,8 @@
+{
+  "name": "azure-arm-unique-string-js",
+  "packageManager": "yarn@4.0.2",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
+}
