@@ -1,0 +1,31 @@
+name: Build
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+        check-latest: true
+    - name: Install dependencies
+      run: |
+        corepack enable
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+        source $HOME/.cargo/env
+        cargo install wasm-pack
+    - name: Build
+      run: |
+        yarn install
+        yarn workspace azure-arm-unique-string build
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: web-page-dist
+        path: packages/web-page/dist/
